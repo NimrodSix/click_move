@@ -36,7 +36,7 @@ class SpriteSheet2:
                 rectangle = pygame.Rect(cx * self.image_width, cy * self.image_height, self.image_width,
                                         self.image_height)  # x, y, w, h
                 self.image_library[(cx, cy)] = tile_sheet.subsurface(rectangle)
-                #print('({}, {}):{} - '.format(cx, cy, rectangle), end='')
+                print('({}, {}):{} - '.format(cx, cy, rectangle), end='')
         print()
 
     def get(self, x, y):
@@ -89,7 +89,8 @@ class ClickableImageManager:
         
         w = ClickableImageManager.ss.width()
         h = ClickableImageManager.ss.height()
-
+        self.w_half = int(w / 2)    # Cursor holds image in middle
+        self.h_half = int(h / 2)
         for yc in range(ClickableImageManager.ss.rows):
             for xc in range(ClickableImageManager.ss.columns):
                 self.CIMList.append(ClickableImage(screen, ClickableImageManager.ss.get(xc, yc).convert(), xc * w, yc * h))
@@ -105,7 +106,7 @@ class ClickableImageManager:
                             break
         else:                                                       # If we have a selection
             if event.type == pygame.MOUSEMOTION:                    # Move it
-                self.CIMList[self.selected].move(event.pos[0] / 2, event.pos[1] / 2)
+                self.CIMList[self.selected].move(event.pos[0] - self.w_half, event.pos[1] - self.h_half)
             if event.type == pygame.MOUSEBUTTONDOWN:                # Or a button down
                 self.selected = -1                                  # Deselect
                 
